@@ -1,6 +1,6 @@
 const Color = require("../colorConsole");
 
-var Util = Util || {};
+var Util = Util || {}; //
 
 Util.isEmptyArray = function(arr){
     return Array.isArray(arr) && arr.length === 0;
