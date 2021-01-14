@@ -1,0 +1,28 @@
+{
+  "name": "bitcoinserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "App.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sh05158/bitCoinServer.git"
+  },
+  "author": "songs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sh05158/bitCoinServer/issues"
+  },
+  "homepage": "https://github.com/sh05158/bitCoinServer#readme",
+  "dependencies": {
+    "chalk": "4.1.0",
+    "cors": "2.8.5",
+    "express": "4.17.1",
+    "externalip": "^1.0.2",
+    "http": "0.0.1-security",
+    "request": "^2.88.2",
+    "socket.io": "^1.5.1"
+  }
+}
