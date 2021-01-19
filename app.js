@@ -13,6 +13,7 @@ const request = require('request');
 const externalip = require('externalip');
 
 const https = require('http');
+const sql = require('./mysql');
 
 var cors = require('cors');
 const { cyanBright } = require('chalk');
