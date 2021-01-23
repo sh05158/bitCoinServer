@@ -8,6 +8,8 @@ var SIG           = require('./signal'),
       Config        = require('../config.json'),
       Util          = require('./Util'),
       CODE          = require('./code');
+
+var Player = require('./player');
     //   sql           = require('../mysql');
     
 
@@ -72,13 +74,12 @@ SocketManager.register = function(io){
             });
         });
 
-
         socket.on(SIG.LOGIN, (msg, cb)=>{
-            console.log('handshake uuid ',msg.uuid, msg.platform, msg.id);
+            Color.green('LOGIN uuid ',msg.uuid, msg.platform, msg.id);
 
             if(msg.platform === 'guest'){
 
-                sql.query("SELECT uuid FROM player",[],function(err,res){
+                sql.query("SELECT playerID, uuid FROM player",[],function(err,res){
                     console.log("쿼리 결과 ",err,res);
     
                     var tempUser = null;
@@ -92,19 +93,23 @@ SocketManager.register = function(io){
                     }
 
                     if(!tempUser){
-                        sql.query("INSERT INTO player (uuid, platform) VALUES(?,?)",[JSON.stringify([msg.uuid]),msg.platform],function(err,res){
-                            if(!err){
-                                cb({
-                                    CODE : CODE.OK,
-                                    isAccountCreated : true
-                                });
-                            }
+                        Player.signup(msg, function(player){
+                            cb({
+                                player : player,
+                                CODE : CODE.OK,
+                                isAccountCreated : true
+                            });
                         });
                     } else {
-                        cb({
-                            CODE : CODE.OK,
-                            isAccountCreated : false
+                        Color.red("tempUIser => ",JSON.stringify(tempUser));
+                        Player.loginPlayer(tempUser.playerID, function(player){
+                            cb({
+                                player : player,
+                                CODE : CODE.OK,
+                                isAccountCreated : false
+                            });
                         });
+                        
                     }
 
                 });
@@ -113,42 +118,26 @@ SocketManager.register = function(io){
                 sql.query("SELECT * FROM player WHERE id = ?",[msg.id],function(err,res){
                     if(res.length === 0){
                         //db에 데이터 없는 게스트 유저 
-                        sql.query("INSERT INTO player (uuid, platform, id) VALUES(?,?,?)",[JSON.stringify([msg.uuid]),msg.platform,msg.id],function(err,res){
-                            if(!err){
-                                cb({
-                                    CODE : CODE.OK,
-                                    isAccountCreated : true
-                                });
-                            }
+                        Player.signup(msg, function(player){
+                            cb({
+                                player : player,
+                                CODE : CODE.OK,
+                                isAccountCreated : true
+                            });
                         });
                     } else {
-                        cb({
-                            CODE : CODE.OK,
-                            isAccountCreated : false
+                        Player.loginPlayer(res[0].playerID, function(player){
+                            cb({
+                                player : player,
+                                CODE : CODE.OK,
+                                isAccountCreated : false
+                            });
                         });
                     }
                     
                 });
             }
 
-            // sql.query("SELECT uuid FROM player",[],function(err,res){
-            //     console.log("쿼리 결과 ",err,res);
-
-            //     var isNewUser = false;
-
-            //     for(var i = 0; i< res.length; i++){
-            //         var uuidArr = JSON.parse(res[i].uuid);
-            //         if(uuidArr.indexOf(msg.uuid) !== -1){
-            //             isNewUser = true;
-            //             break;
-            //         }
-            //     }
-
-            //     cb({
-            //         CODE : CODE.OK,
-            //         isNewUser : isNewUser
-            //     });
-            // });
         });
 
 
