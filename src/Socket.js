@@ -140,6 +140,9 @@ SocketManager.register = function(io){
 
         });
 
+        socket.on(SIG.NICKNAME_UPDATE, (msg, cb)=>{
+            Player.updateNickname(msg,cb);
+        });
 
         socket.on('disconnect', () => {
             //소켓 끊김 (종료)

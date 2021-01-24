@@ -29,6 +29,9 @@ var Player = function(){
     this.vipLevel        = 1;
     this.vipExp          = 0;
     this.vipExpm         = 10;
+    this.diamond             = 0;
+    this.isGeneratedNickname = 1;
+    this.nicknameChangeAvailableCount = 1;
 }
 
 Player.signup = function(msg, cb){
@@ -38,9 +41,9 @@ Player.signup = function(msg, cb){
     player.platform = msg.platform;
     player.uuid = msg.uuid;
     if(msg.id){
-        sql.query("INSERT INTO player (nickname, id, uuid, platform, level, gold, bitcoin, inventory, equipment, lastLoginTime,\
-            chapter, stage, exp, expm, lastRequestTime, vipLevel, vipExp, vipExpm) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            [player.nickname, msg.id, JSON.stringify([msg.uuid]),msg.platform, player.level, player.gold, player.bitcoin, JSON.stringify(player.inventory), JSON.stringify(player.equipment),
+        sql.query("INSERT INTO player (diamond, isGeneratedNickname, nicknameChangeAvailableCount, nickname, id, uuid, platform, level, gold, bitcoin, inventory, equipment, lastLoginTime,\
+            chapter, stage, exp, expm, lastRequestTime, vipLevel, vipExp, vipExpm) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            [player.diamond, player.isGeneratedNickname, player.nicknameChangeAvailableCount, player.nickname, msg.id, JSON.stringify([msg.uuid]),msg.platform, player.level, player.gold, player.bitcoin, JSON.stringify(player.inventory), JSON.stringify(player.equipment),
            player.lastLoginTime, player.chapter, player.stage, player.exp, player.expm, player.lastRequestTime,player.vipLevel,
        player.vipExp, player.vipExpm],function(err,res){
            sql.query("SELECT playerID FROM player WHERE id = ?",[msg.id],function(err2,res2){
@@ -51,9 +54,9 @@ Player.signup = function(msg, cb){
            });
        });
     } else {
-        sql.query("INSERT INTO player (nickname, uuid, platform, level, gold, bitcoin, inventory, equipment, lastLoginTime,\
+        sql.query("INSERT INTO player (diamond, isGeneratedNickname, nicknameChangeAvailableCount, nickname, uuid, platform, level, gold, bitcoin, inventory, equipment, lastLoginTime,\
             chapter, stage, exp, expm, lastRequestTime, vipLevel, vipExp, vipExpm) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-            [player.nickname, JSON.stringify([msg.uuid]),msg.platform, player.level, player.gold, player.bitcoin, JSON.stringify(player.inventory), JSON.stringify(player.equipment),
+            [player.diamond, player.isGeneratedNickname, player.nicknameChangeAvailableCount,player.nickname, JSON.stringify([msg.uuid]),msg.platform, player.level, player.gold, player.bitcoin, JSON.stringify(player.inventory), JSON.stringify(player.equipment),
            player.lastLoginTime, player.chapter, player.stage, player.exp, player.expm, player.lastRequestTime,player.vipLevel,
        player.vipExp, player.vipExpm],function(err,res){
 
@@ -105,9 +108,33 @@ Player.loginPlayer = function(playerID, cb){
         player.vipLevel         = res[0].vipLevel;
         player.vipExp           = res[0].vipExp;
         player.vipExpm          = res[0].vipExpm;
+        player.diamond          = res[0].diamond;
+        player.isGeneratedNickname          = res[0].isGeneratedNickname;
+        player.nicknameChangeAvailableCount          = res[0].nicknameChangeAvailableCount;
 
         cb(player);
     });
 }
+
+Player.updateNickname = function(msg, cb){
+    sql.query("SELECT isGeneratedNickname, nicknameChangeAvailableCount FROM player WHERE playerID = ?",[msg.playerID],function(err,res){
+        if(res[0].nicknameChangeAvailableCount >= 1){
+            sql.query("UPDATE player SET (isGeneratedNickname, nicknameChangeAvailableCount, nickname) = (?,?,?) WHERE playerID = ? ",[0,res[0].nicknameChangeAvailableCount-1,msg.nickname],
+            function(err2,res2){
+                if(!!err || !!err2){
+                    cb({
+                        CODE : CODE.ERROR
+                    });
+                    return;
+                }
+                cb({
+                    CODE : CODE.OK,
+                    afterNickname : msg.nickname
+                });
+            })
+        }
+    })
+}
+
 
 module.exports = Player;
