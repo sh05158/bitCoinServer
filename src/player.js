@@ -55,7 +55,7 @@ Player.signup = function(msg, cb){
        });
     } else {
         sql.query("INSERT INTO player (diamond, isGeneratedNickname, nicknameChangeAvailableCount, nickname, uuid, platform, level, gold, bitcoin, inventory, equipment, lastLoginTime,\
-            chapter, stage, exp, expm, lastRequestTime, vipLevel, vipExp, vipExpm) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            chapter, stage, exp, expm, lastRequestTime, vipLevel, vipExp, vipExpm) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             [player.diamond, player.isGeneratedNickname, player.nicknameChangeAvailableCount,player.nickname, JSON.stringify([msg.uuid]),msg.platform, player.level, player.gold, player.bitcoin, JSON.stringify(player.inventory), JSON.stringify(player.equipment),
            player.lastLoginTime, player.chapter, player.stage, player.exp, player.expm, player.lastRequestTime,player.vipLevel,
        player.vipExp, player.vipExpm],function(err,res){
