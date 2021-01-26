@@ -1,8 +1,8 @@
 {
-    "host" : "development.bitcoin.min-joon.com",
-    "port" : 43306,
-    "user" : "root",
+    "host" : "bitcoin.cd1gjcqj7h8t.ap-northeast-2.rds.amazonaws.com",
+    "port" : 3306,
+    "user" : "admin",
     "password" : "sjhsmj09100605!",
-    "connectionLimit" : 10000,
+    "connectionLimit" : 100,
     "database" : "bitcoin_test"
 }

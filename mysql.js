@@ -3,7 +3,7 @@ const Color = require('./colorConsole');
 const config = require('./mysqlConfig.json');
 
 const connection = mysql.createConnection({
-    // host            :   config.host,
+    host            :   config.host,
     user            :   config.user,
     database        :   config.database,
     port            :   config.port,
