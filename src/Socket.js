@@ -31,47 +31,57 @@ SocketManager.register = function(io){
 
         socket.on(SIG.HAND_SHAKE, (msg, cb)=>{
             console.log('handshake uuid ',msg.uuid);
-            sql.query("SELECT uuid, platform, id FROM player",[],function(err,res){
+            sql.query("SELECT * FROM user WHERE uuid = ?",[msg.uuid],function(err,res){
+
+                if(!!err){
+                    cb({
+                        CODE : CODE.ERROR,
+                        reason : 'query error'
+                    });
+                    return;
+                }
+
                 console.log("쿼리 결과 ",err,res);
 
                 var isNewUser = true;
                 var platform = null;
                 var tempUser = null;
 
-                for(var i = 0; i< res.length; i++){
-                    var uuidArr = JSON.parse(res[i].uuid);
-                    if(uuidArr.indexOf(msg.uuid) !== -1){
-                        isNewUser = false;
-                        tempUser = res[i];
-                        platform = res[i].platform;
-                        break;
-                    }
-                }
-
-                if(!!tempUser){
-                    console.log("tempuser 존재 ",{
-                        CODE : CODE.OK,
-                        isNewUser : isNewUser,
-                        platform : tempUser.platform
-                    });
+                if(res.length === 0){
+                    isNewUser = true;
                     cb({
                         CODE : CODE.OK,
                         isNewUser : isNewUser,
-                        platform : tempUser.platform
                     });
+                    return;
                 } else {
-                    console.log("tempuser x ",{
-                        CODE : CODE.OK,
-                        isNewUser : isNewUser
-                    });
+                    if(res.length > 1){
+                        cb({
+                            CODE : CODE.ERROR,
+                            reason : 'uuid가 2개 이상 존재합니다'
+                        });
+                        return;
+                    }
+                    
+                    var platform;
+
+                    if(res[0].id !== null){
+                        platform = 'google';
+                    } else {
+                        platform = 'guest';
+                    }
 
                     cb({
                         CODE : CODE.OK,
-                        isNewUser : isNewUser
+                        isNewUser : isNewUser,
+                        platform : platform
                     });
+                    return;
                 }
-                
+
+
             });
+
         });
 
         socket.on(SIG.LOGIN, (msg, cb)=>{
@@ -79,20 +89,16 @@ SocketManager.register = function(io){
 
             if(msg.platform === 'guest'){
 
-                sql.query("SELECT playerID, uuid FROM player",[],function(err,res){
-                    console.log("쿼리 결과 ",err,res);
-    
-                    var tempUser = null;
-    
-                    for(var i = 0; i< res.length; i++){
-                        var uuidArr = JSON.parse(res[i].uuid);
-                        if(uuidArr.indexOf(msg.uuid) !== -1){
-                            tempUser = res[i];
-                            break;
-                        }
+                sql.query("SELECT * FROM user WHERE uuid = ?",[msg.uuid],function(err,res){
+                    if(!!err){
+                        cb({
+                            CODE : CODE.ERROR,
+                            reason : 'query error'
+                        });
+                        return;
                     }
 
-                    if(!tempUser){
+                    if(res.length === 0){
                         Player.signup(msg, function(player){
                             cb({
                                 player : player,
@@ -100,8 +106,8 @@ SocketManager.register = function(io){
                                 isAccountCreated : true
                             });
                         });
-                    } else {
-                        Color.red("tempUIser => ",JSON.stringify(tempUser));
+                    } else if(res.length === 1){
+                        // Color.red("tempUIser => ",JSON.stringify(tempUser));
                         Player.loginPlayer(tempUser.playerID, function(player){
                             cb({
                                 player : player,
@@ -110,14 +116,19 @@ SocketManager.register = function(io){
                             });
                         });
                         
+                    } else {
+                        cb({
+                            // player : player,
+                            CODE : CODE.ERROR,
+                            reason : '로그인 결과가 2개 이상입니다'
+                        });
                     }
-
                 });
 
             } else {
-                sql.query("SELECT * FROM player WHERE id = ?",[msg.id],function(err,res){
+                sql.query("SELECT * FROM user WHERE id = ?",[msg.id],function(err,res){
                     if(res.length === 0){
-                        //db에 데이터 없는 게스트 유저 
+                        //db에 데이터 없는 구글 유저
                         Player.signup(msg, function(player){
                             cb({
                                 player : player,
