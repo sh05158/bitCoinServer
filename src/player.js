@@ -45,8 +45,8 @@ Player.signup = function(msg, cb){
         msg.id = null;
     }
 
-    sql.query("INSERT INTO player (diamond, isGeneratedNickname, nicknameChangeAvailableCount, nickname, id, platform, level, gold, bitcoin, inventory, equipment, lastLoginTime, chapter, stage, exp, expm, lastRequestTime, vipLevel, vipExp, vipExpm) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        [player.diamond, player.isGeneratedNickname, player.nicknameChangeAvailableCount, player.nickname, msg.id, msg.platform, player.level, player.gold, player.bitcoin, JSON.stringify(player.inventory), JSON.stringify(player.equipment),
+    sql.query("INSERT INTO player (uuid, diamond, isGeneratedNickname, nicknameChangeAvailableCount, nickname, id, platform, level, gold, bitcoin, inventory, equipment, lastLoginTime, chapter, stage, exp, expm, lastRequestTime, vipLevel, vipExp, vipExpm) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        [msg.uuid, player.diamond, player.isGeneratedNickname, player.nicknameChangeAvailableCount, player.nickname, msg.id, msg.platform, player.level, player.gold, player.bitcoin, JSON.stringify(player.inventory), JSON.stringify(player.equipment),
         player.lastLoginTime, player.chapter, player.stage, player.exp, player.expm, player.lastRequestTime,player.vipLevel,
     player.vipExp, player.vipExpm],function(err,res){
 
@@ -55,7 +55,7 @@ Player.signup = function(msg, cb){
             return;
         }
 
-        sql.query("SELECT playerID FROM player WHERE id = ?",[msg.id],function(err2,res2){
+        sql.query("SELECT playerID FROM player WHERE uuid = ?",[msg.uuid],function(err2,res2){
 
             if(!!err2){
                 cb(null);
