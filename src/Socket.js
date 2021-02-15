@@ -45,7 +45,6 @@ SocketManager.register = function(io){
 
                 var isNewUser = true;
                 var platform = null;
-                var tempUser = null;
 
                 if(res.length === 0){
                     isNewUser = true;
@@ -107,8 +106,7 @@ SocketManager.register = function(io){
                             });
                         });
                     } else if(res.length === 1){
-                        // Color.red("tempUIser => ",JSON.stringify(tempUser));
-                        Player.loginPlayer(msg, tempUser.playerID, function(player){
+                        Player.loginPlayer(msg, res[0].playerID, function(player){
                             cb({
                                 player : player,
                                 CODE : CODE.OK,
