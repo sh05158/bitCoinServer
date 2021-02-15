@@ -129,7 +129,7 @@ Player.loginPlayer = function(msg, playerID, cb){
         });
     }
 
-    sql.query("SELECT * FROM user WHERE uuid = ?",[uuid],function(err1,res1){
+    sql.query("SELECT * FROM user WHERE uuid = ?",[msg.uuid],function(err1,res1){
 
         if(err1){
             cb(null);
