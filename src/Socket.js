@@ -43,14 +43,13 @@ SocketManager.register = function(io){
 
                 console.log("쿼리 결과 ",err,res);
 
-                var isNewUser = true;
                 var platform = null;
 
                 if(res.length === 0){
                     isNewUser = true;
                     cb({
                         CODE : CODE.OK,
-                        isNewUser : isNewUser,
+                        isNewUser : true,
                     });
                     return;
                 } else {
@@ -72,7 +71,7 @@ SocketManager.register = function(io){
 
                     cb({
                         CODE : CODE.OK,
-                        isNewUser : isNewUser,
+                        isNewUser : false,
                         platform : platform
                     });
                     return;
