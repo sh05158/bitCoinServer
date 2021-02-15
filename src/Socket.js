@@ -108,7 +108,7 @@ SocketManager.register = function(io){
                         });
                     } else if(res.length === 1){
                         // Color.red("tempUIser => ",JSON.stringify(tempUser));
-                        Player.loginPlayer(tempUser.playerID, function(player){
+                        Player.loginPlayer(msg, tempUser.playerID, function(player){
                             cb({
                                 player : player,
                                 CODE : CODE.OK,
@@ -127,9 +127,25 @@ SocketManager.register = function(io){
 
             } else {
                 sql.query("SELECT * FROM user WHERE id = ?",[msg.id],function(err,res){
+                    if(!!err){
+                        cb({
+                            CODE : CODE.ERROR,
+                            reason : 'query error.'
+                        });
+                        return;
+
+                    }
                     if(res.length === 0){
                         //db에 데이터 없는 구글 유저
                         Player.signup(msg, function(player){
+                            if(!player){
+                                cb({
+                                    CODE : CODE.ERROR,
+                                    reason : '회원가입중 쿼리 에러발생'
+                                })
+                                return;
+                            }
+
                             cb({
                                 player : player,
                                 CODE : CODE.OK,
@@ -137,7 +153,15 @@ SocketManager.register = function(io){
                             });
                         });
                     } else {
-                        Player.loginPlayer(res[0].playerID, function(player){
+                        Player.loginPlayer(msg, res[0].playerID, function(player){
+                            if(!player){
+                                cb({
+                                    CODE : CODE.ERROR,
+                                    reason : '로그인중  쿼리 에러발생'
+                                })
+                                return;
+                            }
+
                             cb({
                                 player : player,
                                 CODE : CODE.OK,
