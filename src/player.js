@@ -32,6 +32,8 @@ var Player = function(){
     this.diamond             = 0;
     this.isGeneratedNickname = 1;
     this.nicknameChangeAvailableCount = 1;
+    this.loginCount      = 0;
+
 }
 
 Player.signup = function(msg, cb){
@@ -45,10 +47,10 @@ Player.signup = function(msg, cb){
         msg.id = null;
     }
 
-    sql.query("INSERT INTO player (uuid, diamond, isGeneratedNickname, nicknameChangeAvailableCount, nickname, id, platform, level, gold, bitcoin, inventory, equipment, lastLoginTime, chapter, stage, exp, expm, lastRequestTime, vipLevel, vipExp, vipExpm) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        [msg.uuid, player.diamond, player.isGeneratedNickname, player.nicknameChangeAvailableCount, player.nickname, msg.id, msg.platform, player.level, player.gold, player.bitcoin, JSON.stringify(player.inventory), JSON.stringify(player.equipment),
-        player.lastLoginTime, player.chapter, player.stage, player.exp, player.expm, player.lastRequestTime,player.vipLevel,
-    player.vipExp, player.vipExpm],function(err,res){
+    var queryObj = Util.getQueryString(player);
+
+    sql.query("INSERT INTO player ("+queryObj.variableStr+") VALUES("+queryObj.questionMarkStr+")",
+        Util.getQueryArr(player),function(err,res){
 
         if(!!err){
             cb(null);
@@ -102,28 +104,32 @@ Player.loginPlayer = function(msg, playerID, cb){
 
             Color.blue("로그인 결과 : ",err,res);
             var player = new Player();
-            player.playerID         = playerID;
-            player.nickname         = res[0].nickname;
-            player.uuid             = res[0].uuid;
-            player.platform         = res[0].platform;
-            player.id               = res[0].id;
-            player.level            = res[0].level;
-            player.gold             = res[0].gold;
-            player.bitcoin          = res[0].bitcoin;
-            player.inventory        = JSON.parse(res[0].inventory);
-            player.equipment        = JSON.parse(res[0].equipment);
-            player.lastLoginTime    = res[0].lastLoginTime;
-            player.chapter          = res[0].chapter;
-            player.stage            = res[0].stage;
-            player.exp              = res[0].exp;
-            player.expm             = res[0].expm;
-            player.lastRequestTime  = res[0].lastRequestTime;
-            player.vipLevel         = res[0].vipLevel;
-            player.vipExp           = res[0].vipExp;
-            player.vipExpm          = res[0].vipExpm;
-            player.diamond          = res[0].diamond;
-            player.isGeneratedNickname          = res[0].isGeneratedNickname;
-            player.nicknameChangeAvailableCount          = res[0].nicknameChangeAvailableCount;
+
+            for(var key in res[0]){
+                player[key] = res[0][key];
+            }
+            // player.playerID         = playerID;
+            // player.nickname         = res[0].nickname;
+            // player.uuid             = res[0].uuid;
+            // player.platform         = res[0].platform;
+            // player.id               = res[0].id;
+            // player.level            = res[0].level;
+            // player.gold             = res[0].gold;
+            // player.bitcoin          = res[0].bitcoin;
+            // player.inventory        = JSON.parse(res[0].inventory);
+            // player.equipment        = JSON.parse(res[0].equipment);
+            // player.lastLoginTime    = res[0].lastLoginTime;
+            // player.chapter          = res[0].chapter;
+            // player.stage            = res[0].stage;
+            // player.exp              = res[0].exp;
+            // player.expm             = res[0].expm;
+            // player.lastRequestTime  = res[0].lastRequestTime;
+            // player.vipLevel         = res[0].vipLevel;
+            // player.vipExp           = res[0].vipExp;
+            // player.vipExpm          = res[0].vipExpm;
+            // player.diamond          = res[0].diamond;
+            // player.isGeneratedNickname          = res[0].isGeneratedNickname;
+            // player.nicknameChangeAvailableCount          = res[0].nicknameChangeAvailableCount;
     
             cb(player);
         });
@@ -159,7 +165,7 @@ Player.loginPlayer = function(msg, playerID, cb){
 Player.updateNickname = function(msg, cb){
     sql.query("SELECT isGeneratedNickname, nicknameChangeAvailableCount FROM player WHERE playerID = ?",[msg.playerID],function(err,res){
         if(res[0].nicknameChangeAvailableCount >= 1){
-            sql.query("UPDATE player SET (isGeneratedNickname, nicknameChangeAvailableCount, nickname) = (?,?,?) WHERE playerID = ? ",[0,res[0].nicknameChangeAvailableCount-1,msg.nickname],
+            sql.query("UPDATE player SET (isGeneratedNickname, nicknameChangeAvailableCount, nickname) = (?,?,?) WHERE playerID = ? ",[0,res[0].nicknameChangeAvailableCount-1,msg.nickname, msg.playerID],
             function(err2,res2){
                 if(!!err || !!err2){
                     cb({
@@ -175,6 +181,75 @@ Player.updateNickname = function(msg, cb){
         }
     })
 }
+
+Player.getPlayer = function(msg, cb){
+    sql.query("SELECT * FROM player WHERE playerID = ?",[msg.playerID], function(err,res){
+        if(err || !res || res.length < 1){
+            cb(null);
+            return;
+        }
+        cb(res);
+    });
+}
+
+Player.createPlayer = function(player, cb){
+    var sql1 = "";
+    var sql2 = "";
+    var keyArr = [];
+    for(var key in player){
+        keyArr.push(player[key]);
+        sql1 += key.toString()+', ';
+        sql2 += "? ,";
+    }
+
+    sql1 = sql1.substring(0,sql1.lastIndexOf(', '));
+    sql2 = sql2.substring(0,sql2.lastIndexOf(', '));
+    
+    var query = 'INSERT INTO player ('+sql1+') VALUES('+sql2+')';
+
+    sql.query(query, keyArr, function(err,res){
+        if(err){
+            cb(null);
+            return;
+        }
+
+        cb(
+            {
+                CODE : CODE.OK
+            }
+        );
+
+
+    });
+}
+
+Player.updatePlayer = function(playerID, data, cb){
+    // var sql1 = "";
+    // var sql2 = "";
+    // var keyArr = [];
+    // for(var key in data){
+    //     keyArr.push(data[key]);
+    //     sql1 += key.toString()+', ';
+    //     sql2 += "?, ";
+    // }
+
+    // sql1 = sql1.substring(0,sql1.lastIndexOf(', '));
+    // sql2 = sql2.substring(0,sql2.lastIndexOf(', '));
+    
+    // console.log(sql1);
+    // console.log(sql2);
+
+    var query = 'UPDATE player SET '+Util.getUpdateQuery(data)+ 'WHERE playerID = ?';
+
+    sql.query(query, [playerID], function(err,res){
+        
+        
+        cb(err,res);
+
+
+    });
+}
+
 
 
 module.exports = Player;

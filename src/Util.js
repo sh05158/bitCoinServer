@@ -36,6 +36,75 @@ Util.getAvailableNumber = function(array,min){
     return returnVal;
 }
 
+Util.getQueryString = function(obj){
+    var sql1 = "";
+    var sql2 = "";
+    for(var key in obj){
+        sql1 += key.toString()+', ';
+        sql2 += "?, ";
+    }
+
+    sql1 = sql1.substring(0,sql1.lastIndexOf(', '));
+    sql2 = sql2.substring(0,sql2.lastIndexOf(', '));
+
+    return {
+        variableStr : sql1,
+        questionMarkStr : sql2
+    }
+}
+
+Util.getQueryArr = function(obj){
+    var keyArr;
+    for(var key in obj){
+
+        if(Array.isArray(obj[key]) || obj.constructor === Object.constructor){
+            keyArr.push(JSON.parse(obj[key]));
+        } 
+        else 
+        {
+            keyArr.push(obj[key]);            
+        }
+
+    }
+
+    return keyArr;
+}
+
+Util.getUpdateQuery = function(obj){
+    var query = '';
+    for(var key in obj){
+        var temp = '';
+        if(obj[key] === null){
+
+            console.log(key, obj[key], 'null이라 continue');
+            continue;
+        }
+        switch(obj[key].constructor){
+            case Number().constructor:
+                temp = "'"+obj[key]+"'";
+                break;
+            case String().constructor:
+                temp = "'"+obj[key]+"'";
+                break;
+            case Object().constructor:
+                temp = "'"+JSON.parse(obj[key])+"'";
+                break;
+            case Array().constructor:
+                temp = "'"+JSON.parse(obj[key])+"'";
+                break;
+            default:
+                Color.red('알 수 없는 타입입니다 '+obj[key]);
+                break;
+        }
+
+        query += key + ' = ' + temp +', ';
+    }
+
+    query = query.substring(0,query.lastIndexOf(', '));
+
+    return query;
+}
+
 module.exports = Util;
 
 

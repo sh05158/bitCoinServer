@@ -27,6 +27,9 @@ SocketManager.register = function(io){
 
         // SocketManager.playerList.push(player);
         
+        var currPlayer = null;
+
+
         Color.green('Player in : ',SocketManager.playerList.length);
 
         socket.on(SIG.HAND_SHAKE, (msg, cb)=>{
@@ -83,6 +86,13 @@ SocketManager.register = function(io){
         });
 
         socket.on(SIG.LOGIN, (msg, cb)=>{
+
+            /* 플레이어 메모리에 담아놓고 써야지 */
+
+            // player = Player.loadPlayer( msg.playerID );
+
+            /*                          */
+
             Color.green('LOGIN uuid ',msg.uuid, msg.platform, msg.id);
 
             if(msg.platform === 'guest'){
@@ -98,14 +108,43 @@ SocketManager.register = function(io){
 
                     if(res.length === 0){
                         Player.signup(msg, function(player){
+
+
+                            if(!player){
+                                cb({
+                                    CODE : CODE.ERROR,
+                                    reason : 'signup failed'
+                                });
+                                return;
+                            }
+
+
+
+                            currPlayer = player;
+                            currPlayer.loginCount++;
+
                             cb({
                                 player : player,
                                 CODE : CODE.OK,
                                 isAccountCreated : true
                             });
+
+
                         });
                     } else if(res.length === 1){
                         Player.loginPlayer(msg, res[0].playerID, function(player){
+
+                            if(!player){
+                                cb({
+                                    CODE : CODE.ERROR,
+                                    reason : 'login failed'
+                                });
+                                return;
+                            }
+
+                            currPlayer = player;
+                            currPlayer.loginCount++;
+
                             cb({
                                 player : player,
                                 CODE : CODE.OK,
@@ -143,6 +182,10 @@ SocketManager.register = function(io){
                                 return;
                             }
 
+                            currPlayer = player;
+                            currPlayer.loginCount++;
+
+
                             cb({
                                 player : player,
                                 CODE : CODE.OK,
@@ -159,6 +202,10 @@ SocketManager.register = function(io){
                                 return;
                             }
 
+                            currPlayer = player;
+                            currPlayer.loginCount++;
+
+
                             cb({
                                 player : player,
                                 CODE : CODE.OK,
@@ -174,11 +221,24 @@ SocketManager.register = function(io){
 
         socket.on(SIG.NICKNAME_UPDATE, (msg, cb)=>{
             Player.updateNickname(msg,cb);
+
         });
 
         socket.on('disconnect', () => {
             //소켓 끊김 (종료)
             console.log('user disconnected');
+
+            if(!currPlayer){
+                return;
+            }
+
+            Player.updatePlayer(currPlayer.playerID, currPlayer, function(err,res){
+                if(err){
+                    console.log("ERROR ----- updatePlayer "+currPlayer.playerID+" error");
+                }
+
+                console.log('save complete ',currPlayer.playerID);
+            });
             // SocketManager.playerList.splice(SocketManager.playerList.indexOf(this.findPlayerBySocket(socket)),1);
         });
 
