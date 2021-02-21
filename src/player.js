@@ -8,6 +8,7 @@ var SIG           = require('./signal'),
       Config        = require('../config.json'),
       Util          = require('./Util'),
       CODE          = require('./code');
+const inventory = require('./inventory');
 
 const shop = require('./shop');
 
@@ -341,12 +342,17 @@ Player.buyItem = function(player, msg, cb){
 }
 
 Player.getItem = function(player, item, cb){
-
+    
 }
 
 Player.equipItem = function(player, msg, cb){
     
 }
 
+Player.enchantItem = function(player, msg, cb){
+    var targetItem = inventory.getInventory(player, msg);
+
+    targetItem.enhance
+}
 
 module.exports = Player;
