@@ -9,6 +9,12 @@ var SIG           = require('./signal'),
       Util          = require('./Util'),
       CODE          = require('./code');
 
+const shop = require('./shop');
+
+var buyType = {
+    GOLD        : 0,
+    DIAMOND     : 1,
+}
 var Player = function(){
     this.playerID        = null;
     this.nickname        = null;
@@ -276,6 +282,69 @@ Player.changeInventory = function(player, msg, cb){
 }
 
 Player.buyItem = function(player, msg, cb){
+    var targetProduct = shop.getProductByCode(player, msg, cb);
+
+    switch(msg.buyType){
+        case buyType.GOLD:
+
+
+            if(!targetProduct.item.price.gold){
+                cb({
+                    CODE:CODE.ERROR,
+                    reason:'골드로 구입할 수 없는 아이템입니다'
+                });
+                return;
+            }
+
+
+            if(player.gold >= targetProduct.item.price.gold){
+                player.gold -= targetProduct.item.price.gold;
+                this.getItem(player, targetProduct.item);
+                cb({
+                    CODE        : CODE.OK,
+                    targetItem  :   targetProduct.item,
+                    player      : player
+                });
+            }
+            else{
+                cb({
+                    CODE        : CODE.ERROR,
+                    reason      : '골드가 부족합니다'
+                });
+            }
+            break;
+        case buyType.DIAMOND:
+
+            if(!targetProduct.item.price.diamond){
+                cb({
+                    CODE:CODE.ERROR,
+                    reason:'다이아로 구입할 수 없는 아이템입니다'
+                });
+                return;
+            }
+
+            if(player.diamond >= targetProduct.item.price.diamond){
+                player.diamond -= targetProduct.item.price.diamond;
+                this.getItem(player, targetProduct.item);
+                cb({
+                    CODE        :   CODE.OK,
+                    targetItem  :   targetProduct.item 
+                });
+            }
+            else{
+                cb({
+                    CODE        : CODE.ERROR,
+                    reason      : '다이아가 부족합니다'
+                });
+            }
+    }
+}
+
+Player.getItem = function(player, item, cb){
+
+}
+
+Player.equipItem = function(player, msg, cb){
     
 }
 

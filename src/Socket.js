@@ -10,6 +10,7 @@ var SIG           = require('./signal'),
       CODE          = require('./code');
 
 var Player = require('./player');
+const shop = require('./shop');
     //   sql           = require('../mysql');
     
 
@@ -226,6 +227,11 @@ SocketManager.register = function(io){
 
         });
 
+        socket.on(SIG.REQUEST_SHOP_PRODUCT, (msg, cb)=>{
+            shop.loadShop(currPlayer, msg, cb);
+        });
+
+        
         socket.on('disconnect', () => {
             //소켓 끊김 (종료)
             console.log('user disconnected');

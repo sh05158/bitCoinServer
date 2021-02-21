@@ -15,47 +15,72 @@ shop.buyItem = function(player, msg, cb){
 
 }
 
-shop.getProductByCode = function(player, msg, cb){
-    
+shop.getProductByCode = function(player, msg, cb){ //shopType, code 필요 
+    var productList = this.loadShop(player, msg, cb);
+
+    var items = productList.items;
+
+    var targetItem = null;
+    for(var i = 0; i<items.length; i++){
+        if(items[i].item.product.code === msg.code){
+            targetItem = items[i];
+            break;
+        }
+    }
+
+    return targetItem;
 }
 
+shop.getShop = function(player, msg, cb){
+    cb({
+        data : this.loadShop(player, msg, cb),
+        CODE : CODE.OK
+    });
+}
 
 shop.loadShop = function(player, msg, cb){
     switch(msg.shopType){
         case shopType.CPU:
-            this.loadCpuShop(player, msg, cb);
+            return this.loadCpuShop;
             break;
         case shopType.VGA:
-            this.loadVgaShop(player, msg, cb);
+            return this.loadVgaShop;
+            break;
+        case shopType.MB:
+            return this.loadMbShop;
+            break;
+        case shopType.RAM:
+            return this.loadRamShop;
+            break;
+        case shopType.COOLER:
+            return this.loadCoolerShop;
             break;
         default:
-            cb({
-                CODE : CODE.ERROR,
-                reason : '존재하지 않는 shopType 값으로 요청했습니다'
-            });
+            return null;
             break;
     }
 }
-shop.loadCpuShop = function(player, msg, cb){
-    cb({
-        CODE : CODE.OK,
-        data : shopData.cpu_shop
-    });
+shop.loadCpuShop = function(){
+    return shopData.cpu_shop;
 }
 
 shop.loadVgaShop = function(player, msg, cb){
+    return shopData.vga_shop;
 
 }
 
 shop.loadMbShop = function(player, msg, cb){
+    return shopData.mb_shop;
 
 }
 
 shop.loadRamShop = function(player, msg, cb){
-
+    return shopData.ram_shop;
+    
 }
 
 shop.loadCoolerShop = function(player, msg, cb){
+    return shopData.cooler_shop;
 
 }
 
