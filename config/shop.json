@@ -1,0 +1,101 @@
+{
+    "cpu_shop":
+    {
+        "items" :
+        [
+            {
+                "item" : { 
+                    "product" : 
+                    {
+                        "name"              : "낡아빠진 cpu",
+                        "code"              : 101,
+                        "clock"             : 2,
+                        "core"              : 1,
+                        "baseSpeed"         : 100,
+                        "enhance"           : 0,
+                        "temperature"       : 10,
+                        "hiddenStatGrade"   : -1,
+                        "hiddenStat"        : []
+                    },
+                    "price" : {
+                        "gold" : 1000
+                    }
+                }
+            },
+            {
+                "item" : { 
+                    "product" : 
+                    {
+                        "name"              : "오래된 cpu",
+                        "code"              : 102,
+                        "clock"             : 2.2,
+                        "core"              : 1,
+                        "baseSpeed"         : 150,
+                        "enhance"           : 0,
+                        "temperature"       : 15,
+                        "hiddenStatGrade"   : -1,
+                        "hiddenStat"        : []
+                    },
+                    "price" : {
+                        "gold" : 3000
+                    }
+                }
+            },
+            {
+                "item" : { 
+                    "product" : 
+                    {
+                        "name"              : "쓸만한 cpu",
+                        "code"              : 103,
+                        "clock"             : 2,
+                        "core"              : 2,
+                        "baseSpeed"         : 130,
+                        "enhance"           : 0,
+                        "temperature"       : 20,
+                        "hiddenStatGrade"   : -1,
+                        "hiddenStat"        : []
+                    },
+                    "price" : {
+                        "gold" : 10000
+                    }
+                }
+            },
+            {
+                "item" : { 
+                    "product" : 
+                    {
+                        "name"              : "꽤 빠른 cpu",
+                        "code"              : 104,
+                        "clock"             : 2.2,
+                        "core"              : 2,
+                        "baseSpeed"         : 180,
+                        "enhance"           : 0,
+                        "temperature"       : 25,
+                        "hiddenStatGrade"   : -1,
+                        "hiddenStat"        : []
+                    },
+                    "price" : {
+                        "gold"      : 50000,
+                        "diamond"   : 10
+                    }
+                }
+            } 
+        ]
+    },
+    "vga_shop":
+    {
+
+    },
+    "mb_shop":
+    {
+
+    },
+    "ram_shop":
+    {
+
+    },
+    "cooler_shop":
+    {
+
+    }
+}

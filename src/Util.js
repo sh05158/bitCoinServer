@@ -87,10 +87,10 @@ Util.getUpdateQuery = function(obj){
                 temp = "'"+obj[key]+"'";
                 break;
             case Object().constructor:
-                temp = "'"+JSON.parse(obj[key])+"'";
+                temp = "'"+JSON.stringify(obj[key])+"'";
                 break;
             case Array().constructor:
-                temp = "'"+JSON.parse(obj[key])+"'";
+                temp = "'"+JSON.stringify(obj[key])+"'";
                 break;
             default:
                 Color.red('알 수 없는 타입입니다 '+obj[key]);
@@ -105,6 +105,14 @@ Util.getUpdateQuery = function(obj){
     return query;
 }
 
+Util.IsJsonString = function(str) {
+    try {
+      var json = JSON.parse(str);
+      return (typeof json === 'object');
+    } catch (e) {
+      return false;
+    }
+}
 module.exports = Util;
 
 

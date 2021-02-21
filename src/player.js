@@ -106,7 +106,16 @@ Player.loginPlayer = function(msg, playerID, cb){
             var player = new Player();
 
             for(var key in res[0]){
-                player[key] = res[0][key];
+                if(Util.IsJsonString(res[0][key])){
+                    
+                    player[key] = JSON.parse(res[0][key]);
+
+                }
+                else {
+
+                    player[key] = res[0][key];
+                
+                }
             }
             // player.playerID         = playerID;
             // player.nickname         = res[0].nickname;
@@ -189,7 +198,7 @@ Player.updateNickname = function(msg, player, cb){
             CODE : CODE.OK,
             afterNickname : msg.nickname
         });
-        
+
     }
     
 }
@@ -262,6 +271,13 @@ Player.updatePlayer = function(playerID, data, cb){
     });
 }
 
+Player.changeInventory = function(player, msg, cb){
+
+}
+
+Player.buyItem = function(player, msg, cb){
+    
+}
 
 
 module.exports = Player;
