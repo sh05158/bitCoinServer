@@ -162,24 +162,36 @@ Player.loginPlayer = function(msg, playerID, cb){
     
 }
 
-Player.updateNickname = function(msg, cb){
-    sql.query("SELECT isGeneratedNickname, nicknameChangeAvailableCount FROM player WHERE playerID = ?",[msg.playerID],function(err,res){
-        if(res[0].nicknameChangeAvailableCount >= 1){
-            sql.query("UPDATE player SET (isGeneratedNickname, nicknameChangeAvailableCount, nickname) = (?,?,?) WHERE playerID = ? ",[0,res[0].nicknameChangeAvailableCount-1,msg.nickname, msg.playerID],
-            function(err2,res2){
-                if(!!err || !!err2){
-                    cb({
-                        CODE : CODE.ERROR
-                    });
-                    return;
-                }
-                cb({
-                    CODE : CODE.OK,
-                    afterNickname : msg.nickname
-                });
-            })
-        }
-    })
+Player.updateNickname = function(msg, player, cb){
+    // sql.query("SELECT isGeneratedNickname, nicknameChangeAvailableCount FROM player WHERE playerID = ?",[msg.playerID],function(err,res){
+    //     if(res[0].nicknameChangeAvailableCount >= 1){
+    //         sql.query("UPDATE player SET (isGeneratedNickname, nicknameChangeAvailableCount, nickname) = (?,?,?) WHERE playerID = ? ",[0,res[0].nicknameChangeAvailableCount-1,msg.nickname, msg.playerID],
+    //         function(err2,res2){
+    //             if(!!err || !!err2){
+    //                 cb({
+    //                     CODE : CODE.ERROR
+    //                 });
+    //                 return;
+    //             }
+    //             cb({
+    //                 CODE : CODE.OK,
+    //                 afterNickname : msg.nickname
+    //             });
+    //         })
+    //     }
+    // })
+
+    if(player.nicknameChangeAvailableCount >= 1){
+        player.nicknameChangeAvailableCount--;
+        player.nickname = msg.nickname;
+
+        cb({
+            CODE : CODE.OK,
+            afterNickname : msg.nickname
+        });
+        
+    }
+    
 }
 
 Player.getPlayer = function(msg, cb){

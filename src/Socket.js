@@ -93,6 +93,11 @@ SocketManager.register = function(io){
 
             /*                          */
 
+            var setPlayer = function(player){
+                currPlayer = player;
+                currPlayer.loginCount++;
+                currPlayer.lastLoginTime = new Date().getTime();
+            }
             Color.green('LOGIN uuid ',msg.uuid, msg.platform, msg.id);
 
             if(msg.platform === 'guest'){
@@ -120,8 +125,8 @@ SocketManager.register = function(io){
 
 
 
-                            currPlayer = player;
-                            currPlayer.loginCount++;
+                            setPlayer(player);
+                            
 
                             cb({
                                 player : player,
@@ -142,8 +147,8 @@ SocketManager.register = function(io){
                                 return;
                             }
 
-                            currPlayer = player;
-                            currPlayer.loginCount++;
+                            setPlayer(player);
+
 
                             cb({
                                 player : player,
@@ -182,8 +187,7 @@ SocketManager.register = function(io){
                                 return;
                             }
 
-                            currPlayer = player;
-                            currPlayer.loginCount++;
+                            setPlayer(player);
 
 
                             cb({
@@ -202,9 +206,7 @@ SocketManager.register = function(io){
                                 return;
                             }
 
-                            currPlayer = player;
-                            currPlayer.loginCount++;
-
+                            setPlayer(player);
 
                             cb({
                                 player : player,
