@@ -199,6 +199,7 @@ Player.updateNickname = function(msg, player, cb){
 
     if(player.nicknameChangeAvailableCount >= 1){
         player.nicknameChangeAvailableCount--;
+        player.isGeneratedNickname = 0;
         player.nickname = msg.nickname;
 
         cb({
