@@ -10,7 +10,11 @@ var SIG           = require('./signal'),
       CODE          = require('./code');
 
 var Player = require('./player');
-const shop = require('./shop');
+const   shop = require('./shop'),
+        score = require('./score'),
+        equipment = require('./equipment'),
+        inventory = require('./inventory');
+const coin = require('./coin');
     //   sql           = require('../mysql');
     
 
@@ -98,7 +102,9 @@ SocketManager.register = function(io){
                 currPlayer = player;
                 currPlayer.loginCount++;
                 currPlayer.lastLoginTime = new Date().getTime();
+                currPlayer.scoreSum = score.getScoreSum(currPlayer);
             }
+
             Color.green('LOGIN uuid ',msg.uuid, msg.platform, msg.id);
 
             if(msg.platform === 'guest'){
@@ -229,6 +235,39 @@ SocketManager.register = function(io){
 
         socket.on(SIG.REQUEST_SHOP_PRODUCT, (msg, cb)=>{
             shop.loadShop(currPlayer, msg, cb);
+        });
+
+        socket.on(SIG.REQUEST_IDLE_REWARD, (msg, cb)=>{
+            var getCoin = score.getMiningCoin(currPlayer);
+
+            if(getCoin === 0){
+                cb({
+                    CODE : CODE.ERROR,
+                    coinType : coin.coinType.BITCOIN,
+                    coin     : 0,
+                    reason   : '채굴된 양이 0입니다'
+                });
+            }
+            else {
+                cb({
+                    CODE : CODE.OK,
+                    coinType : coin.coinType.BITCOIN,
+                    coin     : getCoin
+                });
+
+                console.log('player ',currPlayer.playerID,'코인 수령 ',getCoin);
+
+
+            }
+
+            Player.setLastRequestTimeNow(currPlayer);
+
+            Player.updatePlayer(currPlayer.playerID, currPlayer);
+
+            
+
+
+
         });
 
         

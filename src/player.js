@@ -40,6 +40,11 @@ var Player = function(){
     this.isGeneratedNickname = 1;
     this.nicknameChangeAvailableCount = 1;
     this.loginCount      = 0;
+    
+    this.scoreSum            = 0;
+    this.maxPossession       = 21600000;
+
+
 
 }
 
@@ -362,6 +367,12 @@ Player.enchantItem = function(player, msg, cb){
     var targetItem = inventory.getInventory(player, msg);
 
     targetItem.enhance
+}
+
+Player.setLastRequestTimeNow = function(player){
+    
+    player.lastRequestTime = new Date().getTime();
+
 }
 
 module.exports = Player;
