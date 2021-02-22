@@ -18,7 +18,7 @@ score.getScoreSum = function(player){
 score.getCpuScore = function(player){
     var cpu = equipment.getPlayerCPU(player);
 
-    if(cpu === null || cpu === {}){
+    if(cpu === null || cpu === {} || !cpu){
         return 0;
     }
 
@@ -30,7 +30,7 @@ score.getCpuScore = function(player){
 score.getVgaScore = function(player){
     var vga = equipment.getPlayerVGA(player);
 
-    if(vga === null || vga === {}){
+    if(vga === null || vga === {} || !vga){
         return 0;
     }
 
@@ -50,7 +50,7 @@ score.getRamScore = function(player){
 
     for(var i = 0; i<ramArray.length; i++){
         var ram = ramArray[i];
-        if(ram === null || ram === []){
+        if(ram === null || ram === [] || !ram){
             continue;
         }
         ramScore += ram.clock * ram.capacity / 100;
