@@ -247,6 +247,9 @@ SocketManager.register = function(io){
                     coin     : 0,
                     reason   : '채굴된 양이 0입니다'
                 });
+
+                console.log('player ',currPlayer.playerID,'채굴코인 0');
+
             }
             else {
                 cb({
