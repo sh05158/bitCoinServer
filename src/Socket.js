@@ -145,7 +145,7 @@ SocketManager.register = function(io){
                         });
                     } else if(res.length === 1){
                         Player.loginPlayer(msg, res[0].playerID, function(player){
-
+                            console.log("플레이어 ",JSON.stringify(player));
                             if(!player){
                                 cb({
                                     CODE : CODE.ERROR,
@@ -252,6 +252,11 @@ SocketManager.register = function(io){
 
             }
             else {
+
+                Player.setLastRequestTimeNow(currPlayer);
+                Player.addBitcoin(currPlayer, getCoin);
+
+                
                 cb({
                     CODE : CODE.OK,
                     coinType : coin.coinType.BITCOIN,
@@ -261,11 +266,13 @@ SocketManager.register = function(io){
                 console.log('player ',currPlayer.playerID,'코인 수령 ',getCoin);
 
 
+
+
             }
 
-            Player.setLastRequestTimeNow(currPlayer);
 
-            Player.updatePlayer(currPlayer.playerID, currPlayer);
+
+            // Player.updatePlayer(currPlayer.playerID, currPlayer);
 
             
 

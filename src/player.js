@@ -126,6 +126,7 @@ Player.loginPlayer = function(msg, playerID, cb){
                 else {
 
                     player[key] = res[0][key];
+                    console.log(key, player[key]);
                 
                 }
             }
@@ -370,9 +371,15 @@ Player.enchantItem = function(player, msg, cb){
 }
 
 Player.setLastRequestTimeNow = function(player){
-    
+
     player.lastRequestTime = new Date().getTime();
 
+}
+
+Player.addBitcoin = function(player, coin){
+    player.bitcoin += coin;
+
+    this.updatePlayer(player.playerID, player);
 }
 
 module.exports = Player;
