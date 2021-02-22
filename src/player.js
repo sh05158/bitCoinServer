@@ -287,7 +287,7 @@ Player.updatePlayer = function(playerID, data, cb){
     sql.query(query, [playerID], function(err,res){
         
         
-        cb(err,res);
+        !!cb && cb(err,res);
 
 
     });
