@@ -223,7 +223,7 @@ SocketManager.register = function(io){
         });
 
         socket.on(SIG.NICKNAME_UPDATE, (msg, cb)=>{
-            Player.updateNickname(msg,cb);
+            Player.updateNickname(msg, currPlayer, cb);
 
         });
 
