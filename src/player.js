@@ -43,6 +43,7 @@ var Player = function(){
     
     this.scoreSum            = 0;
     this.maxPossession       = 21600000;
+    this.mineTime            = 10*1000;
 
 
 
