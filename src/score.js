@@ -42,7 +42,7 @@ score.getVgaScore = function(player){
 score.getRamScore = function(player){
     var ramArray = equipment.getPlayerRAM(player);
 
-    if(ramArray === null || ramArray === []){
+    if(ramArray === null || ramArray === [] || !ramArray){
         return 0;
     }
 
