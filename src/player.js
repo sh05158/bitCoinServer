@@ -206,6 +206,14 @@ Player.updateNickname = function(msg, player, cb){
             afterNickname : msg.nickname
         });
 
+        Player.updatePlayer(player.playerID, player);
+
+    }
+    else{
+        cb({
+            CODE : CODE.ERROR,
+            reason : '닉네임 변경 가능 횟수 부족함'
+        });
     }
     
 }
