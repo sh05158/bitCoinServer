@@ -45,7 +45,7 @@ shop.buyItem = function(player, msg, cb){
                 inventory.getItem(player, targetProduct.item);
                 cb({
                     CODE        : CODE.OK,
-                    targetItem  :   targetProduct.item,
+                    targetItem  : targetProduct.item,
                     player      : player
                 });
             }
@@ -71,7 +71,8 @@ shop.buyItem = function(player, msg, cb){
                 inventory.getItem(player, targetProduct.item);
                 cb({
                     CODE        :   CODE.OK,
-                    targetItem  :   targetProduct.item 
+                    targetItem  :   targetProduct.item,
+                    player      :   player
                 });
             }
             else{
