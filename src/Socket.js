@@ -15,6 +15,7 @@ const   shop = require('./shop'),
         equipment = require('./equipment'),
         inventory = require('./inventory');
 const coin = require('./coin');
+const { getItem } = require('./inventory');
     //   sql           = require('../mysql');
     
 
@@ -237,6 +238,11 @@ SocketManager.register = function(io){
             shop.loadShop(currPlayer, msg, cb);
         });
 
+        socket.on(SIG.REQUEST_BUY_ITEM, (msg, cb)=>{
+
+        });
+
+        
         socket.on(SIG.REQUEST_IDLE_REWARD, (msg, cb)=>{
             var getCoin = score.getMiningCoin(currPlayer);
 
