@@ -239,7 +239,7 @@ SocketManager.register = function(io){
         });
 
         socket.on(SIG.REQUEST_BUY_ITEM, (msg, cb)=>{
-
+            shop.buyItem(currPlayer, msg, cb);
         });
 
         
