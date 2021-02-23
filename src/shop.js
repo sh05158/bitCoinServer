@@ -1,6 +1,7 @@
 var shopData = require('../config/shop.json');
 const CODE = require('./code'),
-    inventory = require('./inventory');
+    inventory = require('./inventory'),
+    score = require('./score');
 
 var shopType = {
     CPU     : 0,
@@ -103,11 +104,23 @@ shop.getProductByCode = function(player, msg){ //shopType, code 필요
 }
 
 shop.getShop = function(player, msg, cb){
-    cb({
-        data : this.loadShop(player, msg),
+    var shopData = JSON.parse(JSON.stringify(shop.loadShop(player,msg))).items;
+
+    if(!!shopData && Array.isArray(shopData)){
+        for(var i = 0; i<shopData.length;i++){
+            var itemScore = score.getItemScore(shopData[i].item.product);
+            shopData[i].item.product.score = itemScore;
+        }
+    }
+
+    console.log(JSON.stringify(shopData));
+
+    !!cb && cb({
+        data : shopData,
         CODE : CODE.OK
     });
 }
+
 
 shop.loadShop = function(player, msg){
     switch(msg.shopType){
@@ -156,3 +169,5 @@ shop.loadCoolerShop = function(){
 }
 
 module.exports = shop;
+
+// shop.getShop(null, {shopType:0}, null);

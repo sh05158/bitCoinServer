@@ -22,9 +22,7 @@ score.getCpuScore = function(player){
         return 0;
     }
 
-    var currScore = cpu.clock * cpu.core * cpu.baseSpeed;
-
-    return currScore;
+    return this.getItemScore(cpu);
 }
 
 score.getVgaScore = function(player){
@@ -36,7 +34,8 @@ score.getVgaScore = function(player){
 
     var currScore = vga.clock * vga.core * vga.baseSpeed;
 
-    return currScore;
+    return this.getItemScore(vga);
+
 }
 
 score.getRamScore = function(player){
@@ -53,7 +52,7 @@ score.getRamScore = function(player){
         if(ram === null || ram === [] || !ram){
             continue;
         }
-        ramScore += ram.clock * ram.capacity / 100;
+        ramScore += this.getItemScore(ram);
 
     }
 
@@ -72,5 +71,26 @@ score.getMiningCoin = function(player){
     var mineCoin = mineCount * player.scoreSum / 500000;
 
     return mineCoin;
+}
+
+score.getItemScore = function(item){
+    if(!item || item.itemType === null){
+        return -1;
+    }
+
+    switch(item.itemType){
+        case equipment.TYPE.CPU:
+            return item.clock * item.core * item.baseSpeed;
+            break;
+        case equipment.TYPE.VGA:
+            return item.clock * item.core * item.baseSpeed;
+            break;           
+        case equipment.TYPE.RAM:
+            return item.clock * item.capacity / 100;
+            break; 
+        default:
+            return -1;
+            break;
+    }
 }
 module.exports = score;

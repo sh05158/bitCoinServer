@@ -15,7 +15,8 @@
                         "enhance"           : 0,
                         "temperature"       : 10,
                         "hiddenStatGrade"   : -1,
-                        "hiddenStat"        : []
+                        "hiddenStat"        : [],
+                        "itemType"          : 0
                     },
                     "price" : {
                         "gold" : 1000
@@ -34,7 +35,8 @@
                         "enhance"           : 0,
                         "temperature"       : 15,
                         "hiddenStatGrade"   : -1,
-                        "hiddenStat"        : []
+                        "hiddenStat"        : [],
+                        "itemType"          : 0
                     },
                     "price" : {
                         "gold" : 3000
@@ -53,7 +55,8 @@
                         "enhance"           : 0,
                         "temperature"       : 20,
                         "hiddenStatGrade"   : -1,
-                        "hiddenStat"        : []
+                        "hiddenStat"        : [],
+                        "itemType"          : 0
                     },
                     "price" : {
                         "gold" : 10000
@@ -72,7 +75,8 @@
                         "enhance"           : 0,
                         "temperature"       : 25,
                         "hiddenStatGrade"   : -1,
-                        "hiddenStat"        : []
+                        "hiddenStat"        : [],
+                        "itemType"          : 0
                     },
                     "price" : {
                         "gold"      : 50000,
