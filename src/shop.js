@@ -111,19 +111,19 @@ shop.getShop = function(player, msg, cb){
 shop.loadShop = function(player, msg){
     switch(msg.shopType){
         case shopType.CPU:
-            return this.loadCpuShop;
+            return this.loadCpuShop();
             break;
         case shopType.VGA:
-            return this.loadVgaShop;
+            return this.loadVgaShop();
             break;
         case shopType.MB:
-            return this.loadMbShop;
+            return this.loadMbShop();
             break;
         case shopType.RAM:
-            return this.loadRamShop;
+            return this.loadRamShop();
             break;
         case shopType.COOLER:
-            return this.loadCoolerShop;
+            return this.loadCoolerShop();
             break;
         default:
             return null;
@@ -134,22 +134,22 @@ shop.loadCpuShop = function(){
     return shopData.cpu_shop;
 }
 
-shop.loadVgaShop = function(player, msg){
+shop.loadVgaShop = function(){
     return shopData.vga_shop;
 
 }
 
-shop.loadMbShop = function(player, msg){
+shop.loadMbShop = function(){
     return shopData.mb_shop;
 
 }
 
-shop.loadRamShop = function(player, msg){
+shop.loadRamShop = function(){
     return shopData.ram_shop;
     
 }
 
-shop.loadCoolerShop = function(player, msg){
+shop.loadCoolerShop = function(){
     return shopData.cooler_shop;
 
 }

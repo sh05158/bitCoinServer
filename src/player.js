@@ -307,7 +307,14 @@ Player.equipItem = function(player, msg, cb){
 }
 
 Player.enchantItem = function(player, msg, cb){
-    var targetItem = inventory.getInventory(player, msg);
+    var targetItem;
+
+    if(msg.isInInventory){
+        targetItem = inventory.getInventory(player, msg);
+    }
+    else{
+        targetItem = equipment(player, msg);
+    }
 
     targetItem.enhance
 }
