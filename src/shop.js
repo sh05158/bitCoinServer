@@ -1,5 +1,6 @@
 var shopData = require('../config/shop.json');
-const CODE = require('./code');
+const CODE = require('./code'),
+    inventory = require('./inventory');
 
 var shopType = {
     CPU     : 0,
@@ -11,13 +12,82 @@ var shopType = {
 
 var shop = shop || {};
 
+shop.buyType = {
+    GOLD        : 0,
+    DIAMOND     : 1,
+}
 shop.buyItem = function(player, msg, cb){
+    var targetProduct = shop.getProductByCode( player, msg.code ); //아이템 코드로 product 가져오기 
+
+    if(!targetProduct || targetProduct === {}){
+        cb({
+            CODE : CODE.ERROR,
+            reason : '존재하지 않는 상품입니다'
+        });
+        return;
+    }
+
+    switch(msg.buyType){
+        case shop.buyType.GOLD:
+
+
+            if(!targetProduct.item.price.gold){
+                cb({
+                    CODE:CODE.ERROR,
+                    reason:'골드로 구입할 수 없는 아이템입니다'
+                });
+                return;
+            }
+
+
+            if(player.gold >= targetProduct.item.price.gold){
+                player.gold -= targetProduct.item.price.gold;
+                inventory.getItem(player, targetProduct.item);
+                cb({
+                    CODE        : CODE.OK,
+                    targetItem  :   targetProduct.item,
+                    player      : player
+                });
+            }
+            else{
+                cb({
+                    CODE        : CODE.ERROR,
+                    reason      : '골드가 부족합니다'
+                });
+            }
+            break;
+        case shop.buyType.DIAMOND:
+
+            if(!targetProduct.item.price.diamond){
+                cb({
+                    CODE:CODE.ERROR,
+                    reason:'다이아로 구입할 수 없는 아이템입니다'
+                });
+                return;
+            }
+
+            if(player.diamond >= targetProduct.item.price.diamond){
+                player.diamond -= targetProduct.item.price.diamond;
+                inventory.getItem(player, targetProduct.item);
+                cb({
+                    CODE        :   CODE.OK,
+                    targetItem  :   targetProduct.item 
+                });
+            }
+            else{
+                cb({
+                    CODE        : CODE.ERROR,
+                    reason      : '다이아가 부족합니다'
+                });
+            }
+        }
+
 
 }
 
-shop.getProductByCode = function(player, msg, cb){ //shopType, code 필요 
-    var productList = this.loadShop(player, msg, cb);
-
+shop.getProductByCode = function(player, msg){ //shopType, code 필요 
+    var productList = this.loadShop(player, msg);
+    
     var items = productList.items;
 
     var targetItem = null;
@@ -33,12 +103,12 @@ shop.getProductByCode = function(player, msg, cb){ //shopType, code 필요
 
 shop.getShop = function(player, msg, cb){
     cb({
-        data : this.loadShop(player, msg, cb),
+        data : this.loadShop(player, msg),
         CODE : CODE.OK
     });
 }
 
-shop.loadShop = function(player, msg, cb){
+shop.loadShop = function(player, msg){
     switch(msg.shopType){
         case shopType.CPU:
             return this.loadCpuShop;
@@ -64,22 +134,22 @@ shop.loadCpuShop = function(){
     return shopData.cpu_shop;
 }
 
-shop.loadVgaShop = function(player, msg, cb){
+shop.loadVgaShop = function(player, msg){
     return shopData.vga_shop;
 
 }
 
-shop.loadMbShop = function(player, msg, cb){
+shop.loadMbShop = function(player, msg){
     return shopData.mb_shop;
 
 }
 
-shop.loadRamShop = function(player, msg, cb){
+shop.loadRamShop = function(player, msg){
     return shopData.ram_shop;
     
 }
 
-shop.loadCoolerShop = function(player, msg, cb){
+shop.loadCoolerShop = function(player, msg){
     return shopData.cooler_shop;
 
 }

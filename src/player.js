@@ -127,7 +127,7 @@ Player.loginPlayer = function(msg, playerID, cb){
                 else {
 
                     player[key] = res[0][key];
-                    console.log(key, player[key]);
+                    // console.log(key, player[key]);
                 
                 }
             }
@@ -296,65 +296,6 @@ Player.updatePlayer = function(playerID, data, cb){
 
 Player.changeInventory = function(player, msg, cb){
 
-}
-
-Player.buyItem = function(player, msg, cb){
-    var targetProduct = shop.getProductByCode(player, msg, cb);
-
-    switch(msg.buyType){
-        case buyType.GOLD:
-
-
-            if(!targetProduct.item.price.gold){
-                cb({
-                    CODE:CODE.ERROR,
-                    reason:'골드로 구입할 수 없는 아이템입니다'
-                });
-                return;
-            }
-
-
-            if(player.gold >= targetProduct.item.price.gold){
-                player.gold -= targetProduct.item.price.gold;
-                this.getItem(player, targetProduct.item);
-                cb({
-                    CODE        : CODE.OK,
-                    targetItem  :   targetProduct.item,
-                    player      : player
-                });
-            }
-            else{
-                cb({
-                    CODE        : CODE.ERROR,
-                    reason      : '골드가 부족합니다'
-                });
-            }
-            break;
-        case buyType.DIAMOND:
-
-            if(!targetProduct.item.price.diamond){
-                cb({
-                    CODE:CODE.ERROR,
-                    reason:'다이아로 구입할 수 없는 아이템입니다'
-                });
-                return;
-            }
-
-            if(player.diamond >= targetProduct.item.price.diamond){
-                player.diamond -= targetProduct.item.price.diamond;
-                this.getItem(player, targetProduct.item);
-                cb({
-                    CODE        :   CODE.OK,
-                    targetItem  :   targetProduct.item 
-                });
-            }
-            else{
-                cb({
-                    CODE        : CODE.ERROR,
-                    reason      : '다이아가 부족합니다'
-                });
-            }
-    }
 }
 
 Player.getItem = function(player, item, cb){

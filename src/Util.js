@@ -76,7 +76,7 @@ Util.getUpdateQuery = function(obj){
         var temp = '';
         if(obj[key] === null){
 
-            console.log(key, obj[key], 'null이라 continue');
+            // console.log(key, obj[key], 'null이라 continue');
             continue;
         }
         switch(obj[key].constructor){
