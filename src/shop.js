@@ -113,7 +113,7 @@ shop.getShop = function(player, msg, cb){
         }
     }
 
-    console.log(JSON.stringify(shopData));
+    // console.log(JSON.stringify(shopData));
 
     !!cb && cb({
         data : shopData,

@@ -235,7 +235,7 @@ SocketManager.register = function(io){
         });
 
         socket.on(SIG.REQUEST_SHOP_PRODUCT, (msg, cb)=>{
-            shop.loadShop(currPlayer, msg, cb);
+            shop.getShop(currPlayer, msg, cb);
         });
 
         socket.on(SIG.REQUEST_BUY_ITEM, (msg, cb)=>{
