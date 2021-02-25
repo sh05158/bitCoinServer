@@ -2,7 +2,7 @@ const mysql = require("mysql2");
 const Color = require('./colorConsole');
 const config = require('./mysqlConfig.json');
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
     host            :   config.host,
     user            :   config.user,
     database        :   config.database,
@@ -11,13 +11,13 @@ const connection = mysql.createConnection({
     password        :   config.password
 });
 
-connection.connect(function(err){
-    if(!err){
-        Color.green("mysql Connection Complete");
-    } else {
-        Color.red("Cannot connect to mysql",err);
-    }
-});
+// connection.connect(function(err){
+//     if(!err){
+//         Color.green("mysql Connection Complete");
+//     } else {
+//         Color.red("Cannot connect to mysql",err);
+//     }
+// });
 
 var sql = sql || {};
 
