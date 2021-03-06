@@ -55,6 +55,7 @@ Util.getQueryString = function(obj){
 
 Util.getQueryArr = function(obj){
     var keyArr;
+    console.log('getQueryArr ', JSON.stringify(obj));
     for(var key in obj){
 
         if(Array.isArray(obj[key]) || obj.constructor === Object.constructor){
