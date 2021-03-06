@@ -16,7 +16,8 @@
                         "temperature"       : 10,
                         "hiddenStatGrade"   : -1,
                         "hiddenStat"        : [],
-                        "itemType"          : 0
+                        "itemType"          : 0,
+                        "itemLevel"         : 0
                     },
                     "price" : {
                         "gold" : 1000
@@ -36,7 +37,9 @@
                         "temperature"       : 15,
                         "hiddenStatGrade"   : -1,
                         "hiddenStat"        : [],
-                        "itemType"          : 0
+                        "itemType"          : 0,
+                        "itemLevel"         : 0
+
                     },
                     "price" : {
                         "gold" : 3000
@@ -76,7 +79,9 @@
                         "temperature"       : 25,
                         "hiddenStatGrade"   : -1,
                         "hiddenStat"        : [],
-                        "itemType"          : 0
+                        "itemType"          : 0,
+                        "itemLevel"         : 0
+
                     },
                     "price" : {
                         "gold"      : 50000,

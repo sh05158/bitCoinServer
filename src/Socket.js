@@ -242,7 +242,6 @@ SocketManager.register = function(io){
             shop.buyItem(currPlayer, msg, cb);
         });
 
-
         socket.on(SIG.REQUEST_IDLE_REWARD, (msg, cb)=>{
             var getCoin = score.getMiningCoin(currPlayer);
 

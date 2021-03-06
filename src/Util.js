@@ -113,6 +113,13 @@ Util.IsJsonString = function(str) {
       return false;
     }
 }
+
+
+Util.getRandomResult = function(prob){
+    var a = Math.random();
+
+    return a < prob; //if return true, it's success
+}
 module.exports = Util;
 
 
