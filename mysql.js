@@ -11,6 +11,34 @@ const connection = mysql.createPool({
     password        :   config.password
 });
 
+function handleDisconnect(connection) {
+    connection.on('error', function(err) {
+      if (!err.fatal) {
+        return;
+      }
+  
+      if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
+        throw err;
+      }
+  
+      console.log('Re-connecting lost connection: ' + err.stack);
+  
+      connection = mysql.createPool({
+        host            :   config.host,
+        user            :   config.user,
+        database        :   config.database,
+        port            :   config.port,
+        connectionLimit :   config.connectionLimit,
+        password        :   config.password
+    });
+    
+      handleDisconnect(connection);
+      connection.connect();
+    });
+  }
+  
+  handleDisconnect(connection);
+
 // connection.connect(function(err){
 //     if(!err){
 //         Color.green("mysql Connection Complete");
