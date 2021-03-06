@@ -54,7 +54,7 @@ Util.getQueryString = function(obj){
 }
 
 Util.getQueryArr = function(obj){
-    var keyArr;
+    var keyArr = [];
     console.log('getQueryArr ', JSON.stringify(obj));
     for(var key in obj){
 
