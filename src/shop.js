@@ -43,10 +43,10 @@ shop.buyItem = function(player, msg, cb){
 
             if(player.gold >= targetProduct.item.price.gold){
                 player.gold -= targetProduct.item.price.gold;
-                inventory.getItem(player, targetProduct.item);
+                inventory.getItem(player, targetProduct);
                 cb({
                     CODE        : CODE.OK,
-                    targetItem  : targetProduct.item,
+                    targetItem  : targetProduct,
                     player      : player
                 });
             }
@@ -69,10 +69,10 @@ shop.buyItem = function(player, msg, cb){
 
             if(player.diamond >= targetProduct.item.price.diamond){
                 player.diamond -= targetProduct.item.price.diamond;
-                inventory.getItem(player, targetProduct.item);
+                inventory.getItem(player, targetProduct);
                 cb({
                     CODE        :   CODE.OK,
-                    targetItem  :   targetProduct.item,
+                    targetItem  :   targetProduct,
                     player      :   player
                 });
             }
