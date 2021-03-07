@@ -40,6 +40,10 @@ Util.getQueryString = function(obj){
     var sql1 = "";
     var sql2 = "";
     for(var key in obj){
+
+        if(!obj[key])
+            continue;
+
         sql1 += key.toString()+', ';
         sql2 += "?, ";
     }
@@ -58,6 +62,10 @@ Util.getQueryArr = function(obj){
     console.log('getQueryArr ', JSON.stringify(obj));
     for(var key in obj){
         console.log( 'parse Key => ',key, 'obj =>',JSON.stringify(obj[key]) );
+        if(!obj[key]){
+            console.log("Continue => ",key);
+            continue;
+        }
         if(Array.isArray(obj[key]) || obj.constructor === Object.constructor){
             // keyArr.push(JSON.stringify(obj[key]));
             keyArr.push(obj[key]);
