@@ -59,7 +59,8 @@ Util.getQueryArr = function(obj){
     for(var key in obj){
         console.log( 'parse Key => ',key, 'obj =>',JSON.stringify(obj[key]) );
         if(Array.isArray(obj[key]) || obj.constructor === Object.constructor){
-            keyArr.push(JSON.stringify(obj[key]));
+            // keyArr.push(JSON.stringify(obj[key]));
+            keyArr.push(obj[key]);
         } 
         else 
         {
