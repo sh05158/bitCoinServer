@@ -66,15 +66,34 @@ Util.getQueryArr = function(obj){
             console.log("Continue => ",key);
             continue;
         }
-        if(Array.isArray(obj[key]) || obj.constructor === Object.constructor){
-            // keyArr.push(JSON.stringify(obj[key]));
-            keyArr.push(obj[key]);
-        } 
-        else 
-        {
-            keyArr.push(obj[key]);            
-        }
+        // if(Array.isArray(obj[key]) || obj.constructor === Object.constructor){
+        //     // keyArr.push(JSON.stringify(obj[key]));
+        //     keyArr.push(obj[key]);
+        // } 
+        // else 
+        // {
+        //     keyArr.push(obj[key]);            
+        // }
+        var temp = '';
 
+        switch(obj[key].constructor){
+            case Number().constructor:
+                temp = "'"+obj[key]+"'";
+                break;
+            case String().constructor:
+                temp = "'"+obj[key]+"'";
+                break;
+            case Object().constructor:
+                temp = "'"+JSON.stringify(obj[key])+"'";
+                break;
+            case Array().constructor:
+                temp = "'"+JSON.stringify(obj[key])+"'";
+                break;
+            default:
+                Color.red('알 수 없는 타입입니다 '+obj[key]);
+                break;
+        }
+        keyArr.push(temp);
     }
 
     return keyArr;
