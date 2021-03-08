@@ -10,7 +10,7 @@ score.getScoreSum = function(player){
     scoreSum += this.getVgaScore(player);
     scoreSum += this.getRamScore(player);
 
-    return scoreSum+1;
+    return scoreSum+100;
 
 }
 
