@@ -1,4 +1,4 @@
-const { createConnection } = require('mysql2/promise');
+// const { createConnection } = require('mysql2/promise');
 const { debug } = require('request');
 const sql = require('../mysql');
 var CODE = require('./code');

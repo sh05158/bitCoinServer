@@ -2,8 +2,12 @@
 var shopData = require('../config/shop.json');
 const CODE = require('./code'),
     inventory = require('./inventory'),
-    score = require('./score'),
-    Player = require('./player');
+    score = require('./score');
+
+var Player = require('./player');
+
+// Player.updatePlayer(22,null);
+
 
 var shopType = {
     CPU     : 0,
@@ -87,12 +91,14 @@ shop.buyItem = function(player, msg, cb){
                     reason      : '다이아가 부족합니다'
                 });
             }
-        }
+            break;
+    }
 
-        Player.updatePlayer(player.playerID, player);
+
 
 
 }
+
 
 shop.getProductByCode = function(player, msg){ //shopType, code 필요 
 
@@ -187,3 +193,5 @@ shop.loadCoolerShop = function(){
 module.exports = shop;
 
 // shop.getShop(null, {shopType:0}, null);
+
+// shop.buyItem({playerID:1},{code:101},null);

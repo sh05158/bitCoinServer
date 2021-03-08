@@ -1,4 +1,4 @@
-const { createConnection } = require('mysql2/promise');
+// const { createConnection } = require('mysql2/promise');
 const { debug } = require('request');
 const sql = require('../mysql');
 var CODE = require('./code');
@@ -240,6 +240,7 @@ SocketManager.register = function(io){
 
         socket.on(SIG.REQUEST_BUY_ITEM, (msg, cb)=>{
             shop.buyItem(currPlayer, msg, cb);
+            Player.updatePlayer(currPlayer.playerID, currPlayer);
         });
 
         socket.on(SIG.REQUEST_IDLE_REWARD, (msg, cb)=>{
