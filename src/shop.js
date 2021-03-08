@@ -18,7 +18,7 @@ shop.buyType = {
     DIAMOND     : 1,
 }
 shop.buyItem = function(player, msg, cb){
-    var targetProduct = shop.getProductByCode( player, msg.code ); //아이템 코드로 product 가져오기 
+    var targetProduct = shop.getProductByCode( player, msg ); //아이템 코드로 product 가져오기 
 
     if(!targetProduct || targetProduct === {}){
         cb({
@@ -88,17 +88,21 @@ shop.buyItem = function(player, msg, cb){
 }
 
 shop.getProductByCode = function(player, msg){ //shopType, code 필요 
-    var productList = this.loadShop(player, msg);
-    
-    var items = productList.items;
-
+    var shopList = shopData;
     var targetItem = null;
-    for(var i = 0; i<items.length; i++){
-        if(items[i].item.product.code === msg.code){
-            targetItem = items[i];
-            break;
+
+    for(var shopType in shopList){
+        var items = shopList[shopType].items;
+
+        for(var i = 0; i<items.length; i++){
+            if(items[i].item.product.code === msg.code){
+                targetItem = items[i];
+                break;
+            }
         }
     }
+    
+    
 
     return targetItem;
 }
