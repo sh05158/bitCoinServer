@@ -91,7 +91,7 @@ shop.getProductByCode = function(player, msg){ //shopType, code 필요
     var shopList = shopData;
     var targetItem = null;
 
-    for(var shopType in shopList){
+    for(var shopType of shopList){
         var items = shopList[shopType].items;
 
         for(var i = 0; i<items.length; i++){
