@@ -2,7 +2,8 @@
 var shopData = require('../config/shop.json');
 const CODE = require('./code'),
     inventory = require('./inventory'),
-    score = require('./score');
+    score = require('./score'),
+    Player = require('./player');
 
 var shopType = {
     CPU     : 0,
@@ -87,6 +88,8 @@ shop.buyItem = function(player, msg, cb){
                 });
             }
         }
+
+        Player.updatePlayer(player.playerID, player);
 
 
 }
