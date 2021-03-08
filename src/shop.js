@@ -1,3 +1,4 @@
+// const { createConnection } = require('mysql2/typings/mysql');
 var shopData = require('../config/shop.json');
 const CODE = require('./code'),
     inventory = require('./inventory'),
@@ -88,6 +89,9 @@ shop.buyItem = function(player, msg, cb){
 }
 
 shop.getProductByCode = function(player, msg){ //shopType, code 필요 
+
+    console.log("msg => ",JSON.stringify(msg));
+
     var shopList = shopData;
     var targetItem = null;
 
@@ -96,16 +100,17 @@ shop.getProductByCode = function(player, msg){ //shopType, code 필요
         var items = shopList[shopType].items;
 
         for(var i = 0; i<items.length; i++){
+            console.log("curr item => ",JSON.stringify(items[i].item.product.code));
             if(items[i].item.product.code === msg.code){
                 targetItem = items[i];
-                break;
+                return targetItem;
             }
         }
     }
     
     
 
-    return targetItem;
+    return null;
 }
 
 shop.getShop = function(player, msg, cb){

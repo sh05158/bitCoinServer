@@ -22,7 +22,6 @@
     "express": "4.17.1",
     "externalip": "^1.0.2",
     "http": "0.0.1-security",
-    "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
     "request": "^2.88.2",
     "socket.io": "^1.5.1"
