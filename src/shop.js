@@ -91,8 +91,8 @@ shop.getProductByCode = function(player, msg){ //shopType, code 필요
     var shopList = shopData;
     var targetItem = null;
 
-    for(var shopType of shopList){
-        console.log(JSON.stringify(shopType));
+    for(var shopType in shopList){
+        console.log(shopType,"////",JSON.stringify(shopType),"@@@@",JSON.stringify(shopList[shopType]));
         var items = shopList[shopType].items;
 
         for(var i = 0; i<items.length; i++){
