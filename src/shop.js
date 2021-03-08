@@ -45,6 +45,9 @@ shop.buyItem = function(player, msg, cb){
             if(player.gold >= targetProduct.item.price.gold){
                 player.gold -= targetProduct.item.price.gold;
                 inventory.getItem(player, targetProduct);
+
+                console.log("buy ITEM RETURN MSG => ",JSON.stringify(player));
+
                 cb({
                     CODE        : CODE.OK,
                     targetItem  : targetProduct,
