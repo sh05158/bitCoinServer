@@ -62,12 +62,15 @@ score.getRamScore = function(player){
 score.getMiningCoin = function(player){
     var timeDiff = new Date().getTime() - player.lastRequestTime;
 
+    if(timeDiff >= player.maxPossession){
+        timeDiff = player.maxPossession;
+    }
     var mineCount = timeDiff/player.mineTime;
 
     if(mineCount < 1){
         return 0;
     }
-
+    
     var mineCoin = mineCount * player.scoreSum / 500000;
 
     return mineCoin;
