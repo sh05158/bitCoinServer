@@ -226,13 +226,29 @@ Player.updateNickname = function(msg, player, cb){
     
 }
 
-Player.getPlayer = function(msg, cb){
-    sql.query("SELECT * FROM player WHERE playerID = ?",[msg.playerID], function(err,res){
+Player.getPlayer = function(playerID, cb){
+    var player = new Player();
+
+    sql.query("SELECT * FROM player WHERE playerID = ?",[playerID], function(err,res){
         if(err || !res || res.length < 1){
             cb(null);
             return;
         }
-        cb(res);
+        for(var key in res[0]){
+            if(Util.IsJsonString(res[0][key])){
+                
+                player[key] = JSON.parse(res[0][key]);
+
+            }
+            else {
+
+                player[key] = res[0][key];
+                // console.log(key, player[key]);
+            
+            }
+        }
+
+        cb(player);
     });
 }
 

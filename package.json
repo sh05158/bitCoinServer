@@ -17,11 +17,13 @@
   },
   "homepage": "https://github.com/sh05158/bitCoinServer#readme",
   "dependencies": {
+    "chai": "^4.3.3",
     "chalk": "4.1.0",
     "cors": "2.8.5",
     "express": "4.17.1",
     "externalip": "^1.0.2",
     "http": "0.0.1-security",
+    "mocha": "^8.3.1",
     "mysql2": "^2.2.5",
     "request": "^2.88.2",
     "socket.io": "^1.5.1"
