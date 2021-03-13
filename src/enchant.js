@@ -7,31 +7,54 @@ var EnchantManager = EnchantManager || {};
 
 
 EnchantManager.enchantItem = function(player, item, cb){
-    var prob = null;
+    var targetSheet = null;
 
-    switch(item.itemType){
-        case equipment.TYPE.CPU:
-            prob = this.getCpuProb;
-            break;
+    targetSheet = this.getTargetSheet(item.product);
+
+    if(!targetSheet){
+        //강화할 수 없는 아이템 
+    }
+    if(util.getRandomResult(targetSheet.)){
+        //강화 성공 
+        item.product.enhance++;
+    }   
+    else {
+        //강화 실패
     }
 }
 
-EnchantManager.getCpuProb = function(item){
-    var targetSheet = enchantSheet.cpu;
-
+EnchantManager.getProb = function(product){
+    var targetSheet = null;
+    
+    switch(product.itemType){
+        case equipment.TYPE.CPU:
+            targetSheet  = enchantSheet.cpu;
+            break;
+        case equipment.TYPE.VGA:
+            targetSheet  = enchantSheet.vga;
+            break;    
+        case equipment.TYPE.MB:
+            targetSheet  = enchantSheet.mb;
+            break;
+        case equipment.TYPE.RAM:
+            targetSheet  = enchantSheet.ram;
+            break;        
+        case equipment.TYPE.COOLER:
+            targetSheet  = enchantSheet.cooler;
+            break;
+        default:
+            return null;
+            
+    }
 
     var targetLevelSheet = null;
     for(var i = 0; i<targetSheet.length;i++){
-        if(targetSheet[i].targetLevel === item.itemLevel){
+        if(targetSheet[i].targetLevel === product.itemLevel){
             targetLevelSheet = targetSheet[i];
         }
     }
 
-    if(!targetLevelSheet){
-        return null;
-    }
-
-    return !!targetLevelSheet[item.enhance] ? targetLevelSheet[item.enhance] : null;
+    return targetLevelSheet;
 
 }
 
