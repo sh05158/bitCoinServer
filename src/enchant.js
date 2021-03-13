@@ -7,6 +7,10 @@ var EnchantManager = EnchantManager || {};
 
 
 EnchantManager.enchantItem = function(player, item, cb){
+    var returnMsg = {
+        isSuccess : false,
+        // player : player
+    }
     var targetSheet = null;
 
     targetSheet = this.getTargetSheet(item.product);
@@ -14,16 +18,36 @@ EnchantManager.enchantItem = function(player, item, cb){
     if(!targetSheet){
         //강화할 수 없는 아이템 
     }
-    if(util.getRandomResult(targetSheet.)){
+
+    var currEnhance = item.product.enhance;
+
+
+    if(!targetSheet.targetProb[currEnhance]){
+        //강화할 수 없는 아이템 
+    }
+
+    if(util.getRandomResult(targetSheet.targetProb[currEnhance])){
         //강화 성공 
+        item.product.baseSpeed += Math.round(item.product.baseSpeed * targetSheet.targetBonus[currEnhance]);
+        item.product.temperature += 10;// 일단 임시로 +10만 하자..
+
         item.product.enhance++;
+
+        returnMsg.isSuccess = true;
+
+        cb({returnMsg});
+
     }   
     else {
         //강화 실패
+
+        returnMsg.isSuccess = false;
+        cb({returnMsg});
+
     }
 }
 
-EnchantManager.getProb = function(product){
+EnchantManager.getTargetSheet = function(product){
     var targetSheet = null;
     
     switch(product.itemType){
